@@ -25,6 +25,8 @@ func (p *Parser) Unmarshal(reader io.Reader, strict bool) (*FB2, error) {
 
 	if strict {
 		decoder.Strict = true
+		decoder.AutoClose = xml.HTMLAutoClose
+		decoder.Entity = xml.HTMLEntity
 	}
 
 	err = decoder.Decode(&fb2)

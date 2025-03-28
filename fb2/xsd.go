@@ -33,36 +33,18 @@ type Body struct {
 type Section struct {
 	XMLName     xml.Name    `xml:"section"`
 	Title       Title       `xml:"title,omitempty"`
-	Epigraphs   []Epigraph  `xml:"epigraph,omitempty"`
 	Paragraphs  []Paragraph `xml:"p"`
-	Images      []Image     `xml:"image,omitempty"`
-	Tables      []Table     `xml:"table,omitempty"`
 	Subsections []Section   `xml:"section,omitempty"`
 }
 
+type Subtitle struct {
+	ID   string `xml:"id,attr,omitempty"`
+	Text string `xml:",chardata"`
+}
+
 type Paragraph struct {
-	Content []any `xml:",any"`
+	Text string `xml:",chardata"`
 }
-
-type InlineTag struct {
-	XMLName xml.Name `xml:""`
-	Text    string   `xml:",chardata"`
-	Href    string   `xml:"l:href,attr,omitempty"`
-}
-
-type Table struct {
-	Rows []TableRow `xml:"tr"`
-}
-
-type TableRow struct {
-	Cells []TableCell `xml:"td"`
-}
-
-type TableCell struct {
-	Content []any `xml:",any"`
-}
-
-type EmptyLine struct{}
 
 type Title struct {
 	Paragraphs []Paragraph `xml:"p,omitempty"`
@@ -134,7 +116,7 @@ type AuthorType struct {
 }
 
 type Coverpage struct {
-	Images Image `xml:"image"`
+	Image *Image `xml:"image"`
 }
 
 type Image struct {
@@ -280,6 +262,6 @@ func (fb2 *FB2) unmarshalCoverpage(data []byte) {
 
 	if endIdx > startIdx {
 		href := parseImage(data[startIdx:endIdx])
-		fb2.Description.TitleInfo.Coverpage.Images.Href = href
+		fb2.Description.TitleInfo.Coverpage.Image.Href = href
 	}
 }
